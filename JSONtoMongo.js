@@ -10,11 +10,22 @@ var fs = require('fs'),
     config = require('./config');
 
 /* Connect to your database */
-
+mongoose.connect(config.db.uri);
 /* 
   Instantiate a mongoose model for each listing object in the JSON file, 
   and then save it to your Mongo database 
  */
+fs.readFile('listings.json', 'utf8', function(err, data){
+  if(err){
+    throw err;
+  }
+  data = JSON.parse(data)["entries"];
+  
+  data.forEach(function(item){
+    Listing.collection.insert(item, function(err,r) {});
+  });
+
+});
 
 
 /* 
